@@ -26,7 +26,8 @@ public class DNSClient {
 
     //FIX THIS
     //public QType qType = QType.A;
-
+    //this maybe?
+    public Type qType = Type.A;
 
     //Entry Point
     public static void main(String[] args) throws Exception {
@@ -140,10 +141,12 @@ public class DNSClient {
             DatagramSocket clientSocket = new DatagramSocket();
             clientSocket.setSoTimeout(this.tOut);
             InetAddress i_add = InetAddress.getByAddress(this.serverInByte);
-            DnsRequest request = new DnsRequest(domainName, qType);
-            byte[] request_bytes = request.createRequest();
+            //DNSRequest request = new DNSRequest(domainName, qType);
+            //i think you meant domain instead of domainName? not sure
+            DNSRequest request = new DNSRequest(domain, qType);
+            byte[] request_bytes = request.getBytes();
 
-            DatagramPacket request_packet = new DatagramPacket(request_bytes, request_bytes.length, i_add, portNumber);
+            DatagramPacket request_packet = new DatagramPacket(request_bytes, request_bytes.length, i_add, portNum);
             DatagramPacket response_packet = new DatagramPacket(this.response_bytes, response_bytes.length);
 
             long start = System.currentTimeMillis();
@@ -158,7 +161,7 @@ public class DNSClient {
             System.out.println("Response received after " + (end - start) / 1000. + " seconds " + "("
                     + (numOfRetries - 1) + " retries)");
 
-            DnsResponse response = new DnsResponse(request_bytes, response_bytes);
+            DNSResponse response = new DNSResponse(request_bytes, response_bytes);
             response.outputResponse();
 
         } catch (UnknownHostException e) {
