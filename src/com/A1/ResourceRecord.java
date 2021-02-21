@@ -2,7 +2,7 @@ package com.A1;
 import com.A1.Type;
 
 
-public class Answer {
+public class ResourceRecord {
 	
 	public String name;
 	public Type type;
@@ -13,7 +13,7 @@ public class Answer {
 	public String RDATA;
 	
 	//not sure what else to put in constructor, but class should be 1 by default
-	public Answer() {
+	public ResourceRecord() {
 		this.CLASS = 1;
 	}
 	
@@ -21,4 +21,5 @@ public class Answer {
 	
 	
 }
+
 

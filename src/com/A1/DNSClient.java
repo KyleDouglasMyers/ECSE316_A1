@@ -85,11 +85,13 @@ public class DNSClient {
                 case "-mx":
                     j++;
                     //qType = "SET A PROPER QTYPE TO MX";
+                    qType = Type.MX;
                     j++;
                     break;
-                case "-nx":
+                case "-ns":
 
                     //qType = "SET A PROPER QTYPE TO NX";
+                	qType = Type.NS;
                     j++;
                     break;
                 default:
@@ -116,14 +118,17 @@ public class DNSClient {
                     }
             }
         }
-        System.out.println("Attempting to make request with:\n");
+       /* System.out.println("Attempting to make request with:\n");
         System.out.println("DNS request with domain: " + domain +"\n");
         System.out.println("DNS request with server: " + server +"\n");
         System.out.println("DNS request with port: " + portNum +"\n");
         System.out.println("DNS request with maximum retries: " + retryMax +"\n");
-        System.out.println("DNS request with timeout: " + tOut +"\n");
+        System.out.println("DNS request with timeout: " + tOut +"\n");*/
 
-
+        //i think we need it to be this according to the instructions:
+        System.out.println("DnsClient sending request for " + domain);
+		System.out.println("Server: " + server);
+		System.out.println("Request Type: " + qType);
 
     }
 
@@ -162,7 +167,7 @@ public class DNSClient {
                     + (numOfRetries - 1) + " retries)");
 
             DNSResponse response = new DNSResponse(request_bytes, response_bytes);
-            response.outputResponse();
+            response.printResponse();
 
         } catch (UnknownHostException e) {
             System.out.println("Error:Host is not known");

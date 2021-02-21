@@ -4,12 +4,12 @@ public class DNSResponse {
 
 	public Header responseHeader;
 	public Question responseQuestion;
-	
+	public ResourceRecord[] answerRecs;
+	public ResourceRecord[] additionalRecs;
 	
 	public DNSResponse(byte[] request, byte[] response) throws Exception {
 		
 		this.responseHeader = new Header(response);
-		
 		
 		//checking certain bits in the response header to see if it was a success
 		if(!this.responseHeader.isResponse()) {
@@ -30,6 +30,19 @@ public class DNSResponse {
 			throw new Exception("Refused: the server refuses to perform this operation due to policy");
 		}
 		
+		//checks if the types are the same
+		if(Question.unpackageQType(request) != Question.unpackageQType(response)) {
+			throw new Exception("The types of the request and response don't match");
+		}
+		
+		//create records
+		
+	}
+	
+	public void printResponse() {
+		//not sure where to get these variables from
+		int time, numretries;
+		System.out.println("Response recieved after " + time + " seconds (" + numretries + " retries)");
 		
 	}
 

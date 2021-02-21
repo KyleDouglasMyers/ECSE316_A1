@@ -71,5 +71,22 @@ public class Question {
 		
 	}
 	
+	public static Type unpackageQType(byte[] packet) {
+		int i = 12;
+		while(packet[i] != (byte) 0x00) {
+			i ++;
+		}
+		
+		if(packet[i+2] == (byte) 0x01) {
+			return Type.A;
+		} if(packet[i+2] == (byte) 0x02) {
+			return Type.NS;
+		} if(packet[i+2] == (byte) 0x0f) {
+			return Type.MX;
+		}
+		
+		return Type.OTHER;
+	}
+	
 	
 }

@@ -1,6 +1,6 @@
 package com.A1;
 
 public enum Type {
-	A, NS, MX, CNAME
+	A, NS, MX, CNAME, OTHER
 }
 
