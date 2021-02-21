@@ -1,4 +1,6 @@
+package src.com.A1;
 import java.nio.ByteBuffer;
+import java.util.Random;
 
 
 public class Header {
@@ -53,13 +55,13 @@ public class Header {
 	 * sets default attributes for requests
 	 */
 	public void setReqDefaults() {
-		this.QR = 0;
+		this.QR = false;
 		this.OPCODE = 0;
-		this.AA = 0;
-		this.TC = 0;
-		this.RD = 1;
+		this.AA = false;
+		this.TC = false;
+		this.RD = true;
 		
-		this.RA = 0;
+		this.RA = false;
 		this.Z = 0;
 		this.RCODE = 0;
 		
@@ -73,19 +75,19 @@ public class Header {
 	//not sure if we need these 
 	
 	public void isAuthority() {
-		this.AA = 1;
+		this.AA = true;
 	}
 	
 	public void isNotAuthority() {
-		this.AA = 0;
+		this.AA = false;
 	}
 	
 	public void wasTruncated() {
-		this.TC = 1;
+		this.TC = true;
 	}
 	
 	public void notTruncated() {
-		this.TC = 0;
+		this.TC = false;
 	}
 }
 

@@ -1,4 +1,9 @@
-import Type;
+//import Type;
+package src.com.A1;
+
+import java.nio.ByteBuffer;
+import com.A1.Type;
+
 public class Question {
 	
 	public String QNAME;
@@ -7,7 +12,7 @@ public class Question {
 	public int QCLASS = 1;
 	
 	
-	public Question(String qname, int qtype) {
+	public Question(String qname, Type qtype) {
 		this.QNAME = qname;
 		this.QTYPE = qtype;
 	}
@@ -24,6 +29,7 @@ public class Question {
 		//QCLASS is always 1
 		bb.put((byte) 0x00);
 		bb.put((byte) 0x01);
+		return bb.array();
 	}
 	
 	
@@ -41,8 +47,8 @@ public class Question {
 		ByteBuffer toReturn = ByteBuffer.allocate(findQNameLen());
 		String labels[] = this.QNAME.split("\\.");
 		for(int i = 0; i< labels.length; i++) {
-			toReturn.put((byte) labels[i].length);
-			for(int j = 0; j < labels[i].length; j++) {
+			toReturn.put((byte) labels[i].length());
+			for(int j = 0; j < labels[i].length(); j++) {
 				toReturn.put((byte) (int) labels[i].charAt(j));
 			}
 		}

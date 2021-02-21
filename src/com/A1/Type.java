@@ -1,5 +1,6 @@
+package com.A1;
 
-enum Type {
+public enum Type {
 	A, NS, MX, CNAME
 }
 
