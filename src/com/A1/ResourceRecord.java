@@ -14,6 +14,10 @@ public class ResourceRecord {
 	
 	public boolean AA;
 	
+	
+	//only if type MX
+	public int pref;
+	
 	//not sure what else to put in constructor, but class should be 1 by default
 	public ResourceRecord(Type qType, boolean aa) {
 		this.type = qType;

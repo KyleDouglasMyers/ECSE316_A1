@@ -41,6 +41,9 @@ public class DNSResponse {
 		for(int i = 0; i<answerRecs.length; i++) {
 			answerRecs[i] = new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA);
 		}
+		
+		
+		
 	}
 	
 	public void printResponse() {
@@ -48,8 +51,59 @@ public class DNSResponse {
 		int time, numretries;
 		System.out.println("Response recieved after " + time + " seconds (" + numretries + " retries)");
 		System.out.println("*** Answer section (" + this.answerRecs.length + " records)***");
-		for(int i = 0; i< this.answerRecs.length; i++) {
-			//print stuff
+		printRec(answerRecs);
+		
+		/*for(int i = 0; i< this.answerRecs.length; i++) {
+			String aa;
+			if(answerRecs[i].AA) {
+				aa = "auth";
+			} else {
+				aa = "nonauth";
+			}
+			if(answerRecs[i].type == Type.A) {
+				System.out.println("IP\t" + answerRecs[i].name + "\t" + answerRecs[i].TTL + "\t" + aa);
+			} 
+			if(answerRecs[i].type == Type.CNAME) {
+				System.out.println("CNAME\t" + answerRecs[i].name + "\t" + answerRecs[i].TTL + "\t" + aa);
+			}
+			if(answerRecs[i].type == Type.MX) {
+				System.out.println("MX\t" + answerRecs[i].name + "\t" + answerRecs[i].pref + "\t" + answerRecs[i].TTL + "\t" + aa);
+			}
+			if(answerRecs[i].type == Type.NS) {
+				System.out.println("NS\t" + answerRecs[i].name + "\t" + answerRecs[i].TTL + "\t" + aa);
+			}
+		}*/
+		
+		if(this.responseHeader.ARCOUNT[1] << 8 + this.responseHeader.ARCOUNT[0] > 0) {
+			System.out.println();
+			System.out.println();
+			System.out.println();
+			System.out.println("*** Additional section (" + this.additionalRecs.length + "records) ***");
+			printRec(additionalRecs);
+			
+		}
+	}
+	
+	public void printRec(ResourceRecord[] r) {
+		for(int i = 0; i< r.length; i++) {
+			String aa;
+			if(r[i].AA) {
+				aa = "auth";
+			} else {
+				aa = "nonauth";
+			}
+			if(r[i].type == Type.A) {
+				System.out.println("IP\t" + r[i].name + "\t" + r[i].TTL + "\t" + aa);
+			} 
+			if(r[i].type == Type.CNAME) {
+				System.out.println("CNAME\t" + r[i].name + "\t" + r[i].TTL + "\t" + aa);
+			}
+			if(r[i].type == Type.MX) {
+				System.out.println("MX\t" + r[i].name + "\t" + r[i].pref + "\t" + r[i].TTL + "\t" + aa);
+			}
+			if(r[i].type == Type.NS) {
+				System.out.println("NS\t" + r[i].name + "\t" + r[i].TTL + "\t" + aa);
+			}
 		}
 	}
 

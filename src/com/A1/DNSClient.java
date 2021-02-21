@@ -152,7 +152,7 @@ public class DNSClient {
             byte[] request_bytes = request.getBytes();
 
             DatagramPacket request_packet = new DatagramPacket(request_bytes, request_bytes.length, i_add, portNum);
-            DatagramPacket response_packet = new DatagramPacket(this.response_bytes, response_bytes.length);
+            DatagramPacket response_packet = new DatagramPacket(this.responseInBytes, responseInBytes.length);
 
             long start = System.currentTimeMillis();
 
