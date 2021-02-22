@@ -1,10 +1,11 @@
 package com.A1;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
+import com.A1.Type;
 
 public class DNSClient {
 
@@ -17,16 +18,15 @@ public class DNSClient {
     public int portNum = 53;
     public int tOut = 500; //5 seconds in millis
     public int retryMax = 3;
-    public int attemptsMade = 1;
+    
+    public int attemptsMade = 0;
 
     //Server Info
     public String domain;
     public String server;
 
-
-    //FIX THIS
-    //public QType qType = QType.A;
-    //this maybe?
+    public int time;
+   
     public Type qType = Type.A;
 
     //Entry Point
@@ -118,14 +118,7 @@ public class DNSClient {
                     }
             }
         }
-       /* System.out.println("Attempting to make request with:\n");
-        System.out.println("DNS request with domain: " + domain +"\n");
-        System.out.println("DNS request with server: " + server +"\n");
-        System.out.println("DNS request with port: " + portNum +"\n");
-        System.out.println("DNS request with maximum retries: " + retryMax +"\n");
-        System.out.println("DNS request with timeout: " + tOut +"\n");*/
 
-        //i think we need it to be this according to the instructions:
         System.out.println("DnsClient sending request for " + domain);
 		System.out.println("Server: " + server);
 		System.out.println("Request Type: " + qType);
@@ -133,52 +126,55 @@ public class DNSClient {
     }
 
     public void attemptRequest() {
-
-        if(this.attemptsMade>retryMax){
+        if(attemptsMade>retryMax){
             System.out.println("Too many retries, exiting\n");
             return;
         }
         else{
-            this.attemptsMade++;
+            attemptsMade++;
         }
 
         try {
             DatagramSocket clientSocket = new DatagramSocket();
             clientSocket.setSoTimeout(this.tOut);
             InetAddress i_add = InetAddress.getByAddress(this.serverInByte);
-            //DNSRequest request = new DNSRequest(domainName, qType);
-            //i think you meant domain instead of domainName? not sure
+            
             DNSRequest request = new DNSRequest(domain, qType);
             byte[] request_bytes = request.getBytes();
 
             DatagramPacket request_packet = new DatagramPacket(request_bytes, request_bytes.length, i_add, portNum);
             DatagramPacket response_packet = new DatagramPacket(this.responseInBytes, responseInBytes.length);
 
-            long start = System.currentTimeMillis();
+            double startTime = System.currentTimeMillis();
 
-            socket.send(request_packet);
-            socket.receive(response_packet);
+            clientSocket.send(request_packet);
+            clientSocket.receive(response_packet);
 
-            long end = System.currentTimeMillis();
+            double endTime = System.currentTimeMillis();
 
-            socket.close();
+            clientSocket.close();
 
-            System.out.println("Response received after " + (end - start) / 1000. + " seconds " + "("
-                    + (numOfRetries - 1) + " retries)");
+            time = (int) (endTime - startTime) / 1000;
 
-            DNSResponse response = new DNSResponse(request_bytes, response_bytes);
-            response.printResponse();
+            DNSResponse response = new DNSResponse(request_bytes, responseInBytes);
+            response.printResponse(this);
 
-        } catch (UnknownHostException e) {
-            System.out.println("Error:Host is not known");
-        } catch (SocketException e) {
-            System.out.println("Error:Can't create socket");
         } catch (SocketTimeoutException e) {
-            System.out.println("Error:Socket has timed out. Trying again ...");
-            pollRequest(numOfRetries + 1);
+            System.out.println("Socket has timed out");
+            attemptRequest();
+       
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        attemptsMade = 0;
+    }
+    
+    public int getAttemptsMade() {
+    	return this.attemptsMade;
+    }
+    
+    public int getTime() {
+    	return this.time;
     }
 
 }

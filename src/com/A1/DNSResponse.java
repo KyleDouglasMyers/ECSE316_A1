@@ -37,19 +37,31 @@ public class DNSResponse {
 		
 		//TODO
 		//create records
+		int o = request.length;
+		int delta = 0;
 		this.answerRecs = new ResourceRecord[this.responseHeader.ANCOUNT[1] << 8 + this.responseHeader.ANCOUNT[0]];
 		for(int i = 0; i<answerRecs.length; i++) {
-			answerRecs[i] = new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA);
+			answerRecs[i] = new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA, o, response);
+			o += answerRecs[i].len;
+			delta += answerRecs[i].len;
+			//length += answerRecs[i].byteLength;
 		}
 		
+		o += delta;
+		
+		this.additionalRecs = new ResourceRecord[this.responseHeader.ARCOUNT[1] << 8 + this.responseHeader.ARCOUNT[0]];
+		for(int i = 0; i<additionalRecs.length; i++) {
+			additionalRecs[i] = new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA, o, response);
+			o += additionalRecs[i].len;
+		}
 		
 		
 	}
 	
-	public void printResponse() {
+	public void printResponse(DNSClient c) {
 		//not sure where to get these variables from
 		int time, numretries;
-		System.out.println("Response recieved after " + time + " seconds (" + numretries + " retries)");
+		System.out.println("Response recieved after " + c.getTime() + " seconds (" + c.getAttemptsMade() + " retries)");
 		System.out.println("*** Answer section (" + this.answerRecs.length + " records)***");
 		printRec(answerRecs);
 		
