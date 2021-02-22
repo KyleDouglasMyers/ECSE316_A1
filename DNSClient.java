@@ -1,11 +1,10 @@
-package com.A1;
+
 
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
-import com.A1.Type;
 
 public class DNSClient {
 
@@ -109,13 +108,18 @@ public class DNSClient {
                             t++;
 
                         }
-                        j++;
+                       
                         domain = inputs[j];
-
+                        
                     }
-                    else{
-                        System.out.println("Incorrect formatting");
-                    }
+                    
+                     j++;
+                    System.out.println(j);
+                    System.out.println(inputs.length);
+                   /* else{
+                        break;
+                    	System.out.println("Incorrect formatting");
+                    }*/
             }
         }
 

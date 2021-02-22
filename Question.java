@@ -1,8 +1,6 @@
-//import Type;
-package src.com.A1;
+
 
 import java.nio.ByteBuffer;
-import com.A1.Type;
 
 public class Question {
 	
