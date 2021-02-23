@@ -36,20 +36,33 @@ public class DNSResponse {
 		}
 		
 		//TODO
+		
+		
+		
+		
 		//create records
 		int o = request.length;
-		int delta = 0;
-		this.answerRecs = new ResourceRecord[this.responseHeader.ANCOUNT[1] << 8 + this.responseHeader.ANCOUNT[0]];
+		this.answerRecs = new ResourceRecord[this.responseHeader.ANCOUNT[1]];
+
+		
 		for(int i = 0; i<answerRecs.length; i++) {
 			answerRecs[i] = new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA, o, response);
 			o += answerRecs[i].len;
-			delta += answerRecs[i].len;
-			//length += answerRecs[i].byteLength;
 		}
 		
-		o += delta;
 		
-		this.additionalRecs = new ResourceRecord[this.responseHeader.ARCOUNT[1] << 8 + this.responseHeader.ARCOUNT[0]];
+		System.out.println("useless");
+		byte[] useless = new byte[this.responseHeader.NSCOUNT[1]];
+		
+		
+		
+		for(int i = 0; i<useless.length; i++) {
+			o+=new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA, o, response).len;
+		}
+
+		
+		
+		this.additionalRecs = new ResourceRecord[this.responseHeader.ARCOUNT[1]];
 		for(int i = 0; i<additionalRecs.length; i++) {
 			additionalRecs[i] = new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA, o, response);
 			o += additionalRecs[i].len;

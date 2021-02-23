@@ -94,7 +94,7 @@ public class DNSClient {
                     j++;
                     break;
                 default:
-                    System.out.println(input);
+                
                 	if (input.startsWith("@")) {
                         server = input.substring(1);
                         String[] ipArray = server.split("\\.");
@@ -114,12 +114,7 @@ public class DNSClient {
                     }
                     domain = inputs[j];
                     j++;
-                    System.out.println(j);
-                    System.out.println(inputs.length);
-                   /* else{
-                        break;
-                    	System.out.println("Incorrect formatting");
-                    }*/
+              
             }
         }
 
