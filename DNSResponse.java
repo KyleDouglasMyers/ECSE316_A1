@@ -35,12 +35,6 @@ public class DNSResponse {
 			throw new Exception("The types of the request and response don't match");
 		}
 		
-		//TODO
-		
-		
-		
-		
-		//create records
 		int o = request.length;
 		this.answerRecs = new ResourceRecord[this.responseHeader.ANCOUNT[1]];
 
@@ -50,11 +44,7 @@ public class DNSResponse {
 			o += answerRecs[i].len;
 		}
 		
-		
-		System.out.println("useless");
 		byte[] useless = new byte[this.responseHeader.NSCOUNT[1]];
-		
-		
 		
 		for(int i = 0; i<useless.length; i++) {
 			o+=new ResourceRecord(Question.unpackageQType(response), this.responseHeader.AA, o, response).len;
@@ -72,7 +62,6 @@ public class DNSResponse {
 	}
 	
 	public void printResponse(DNSClient c) {
-		//not sure where to get these variables from
 		int time, numretries;
 		System.out.println("Response recieved after " + c.getTime() + " seconds (" + c.getAttemptsMade() + " retries)");
 		System.out.println("*** Answer section (" + this.answerRecs.length + " records)***");

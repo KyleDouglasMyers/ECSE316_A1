@@ -136,14 +136,13 @@ public class DNSClient {
         try {
             DatagramSocket clientSocket = new DatagramSocket();
             clientSocket.setSoTimeout(this.tOut);
-            InetAddress i_add = InetAddress.getByAddress(this.serverInByte);
-           
-            
             
             DNSRequest request = new DNSRequest(domain, qType);
-            byte[] request_bytes = request.getBytes();
+            byte[] reqBytes = request.getBytes();
+            
+            InetAddress address = InetAddress.getByAddress(this.serverInByte);
 
-            DatagramPacket request_packet = new DatagramPacket(request_bytes, request_bytes.length, i_add, portNum);
+            DatagramPacket request_packet = new DatagramPacket(reqBytes, reqBytes.length, address, portNum);
             DatagramPacket response_packet = new DatagramPacket(this.responseInBytes, responseInBytes.length);
 
             double startTime = System.currentTimeMillis();
@@ -157,7 +156,7 @@ public class DNSClient {
 
             time = (int) (endTime - startTime) / 1000;
 
-            DNSResponse response = new DNSResponse(request_bytes, responseInBytes);
+            DNSResponse response = new DNSResponse(reqBytes, responseInBytes);
             response.printResponse(this);
 
         } catch (SocketTimeoutException e) {

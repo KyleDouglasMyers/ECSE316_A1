@@ -46,42 +46,24 @@ public class ResourceRecord {
         l+=10;
         
         this.len = rd.length;
-        System.out.println(this.name);
 	}
 	
 	public RData getRData(int i) {
 		RData result = new RData();
 		String domain = "";
-		
-		//System.out.println("i: " + i + " size:" + response.length);
-		
+
 		int size = this.response[i] & 0xff;
-		
-		System.out.println("s"+size);
 		
 		boolean dot = false;
 		int c = 0;
 		
 		while (size != 0) {
-			System.out.println("in loop");
+			
 			if (dot) {
 				domain += ".";
 			}
 			
-			if ((size & 0xc0) == (int)0xc0) {
-				
-				byte[] offset = { (byte) (response[i] & 0x3F), this.response[i + 1] };
-	
-				ByteBuffer wrapped = ByteBuffer.wrap(offset);
-				
-				domain += getRData(wrapped.getShort()).domain;
-				i += 2;
-				c += 2;
-				size = 0;
-			
-			
-			} else {
-				
+			if ((size & 0xc0) != (int)0xc0) {
 				if(response[i] > 0) {
 					for (int a = 0; a < response[i]; a++) {
 						if(response[i] > 0) {
@@ -97,6 +79,17 @@ public class ResourceRecord {
 				i += size + 1;
 			    c += size + 1;
 			    size = response[i];
+
+			} else {
+				byte[] offset = { (byte) (response[i] & 0x3F), this.response[i + 1] };
+	
+				ByteBuffer wrapped = ByteBuffer.wrap(offset);
+				
+				domain += getRData(wrapped.getShort()).domain;
+				i += 2;
+				c += 2;
+				size = 0;
+				
 			}
 			dot = true;
 		}
