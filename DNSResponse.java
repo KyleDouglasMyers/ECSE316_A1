@@ -65,26 +65,6 @@ public class DNSResponse {
 		System.out.println("*** Answer section (" + this.answerRecs.length + " records)***");
 		printRec(answerRecs);
 		
-		/*for(int i = 0; i< this.answerRecs.length; i++) {
-			String aa;
-			if(answerRecs[i].AA) {
-				aa = "auth";
-			} else {
-				aa = "nonauth";
-			}
-			if(answerRecs[i].type == Type.A) {
-				System.out.println("IP\t" + answerRecs[i].name + "\t" + answerRecs[i].TTL + "\t" + aa);
-			} 
-			if(answerRecs[i].type == Type.CNAME) {
-				System.out.println("CNAME\t" + answerRecs[i].name + "\t" + answerRecs[i].TTL + "\t" + aa);
-			}
-			if(answerRecs[i].type == Type.MX) {
-				System.out.println("MX\t" + answerRecs[i].name + "\t" + answerRecs[i].pref + "\t" + answerRecs[i].TTL + "\t" + aa);
-			}
-			if(answerRecs[i].type == Type.NS) {
-				System.out.println("NS\t" + answerRecs[i].name + "\t" + answerRecs[i].TTL + "\t" + aa);
-			}
-		}*/
 		
 		if(this.responseHeader.ARCOUNT[1] << 8 + this.responseHeader.ARCOUNT[0] > 0) {
 			System.out.println();

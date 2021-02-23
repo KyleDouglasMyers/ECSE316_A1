@@ -15,7 +15,7 @@ public class DNSClient {
 
     //Default Nums
     public int portNum = 53;
-    public int tOut = 500; //5 seconds in millis
+    public int tOut = 5000; 
     public int retryMax = 3;
     
     public int attemptsMade = 0;
@@ -94,7 +94,8 @@ public class DNSClient {
                     j++;
                     break;
                 default:
-                    if (input.startsWith("@")) {
+                    System.out.println(input);
+                	if (input.startsWith("@")) {
                         server = input.substring(1);
                         String[] ipArray = server.split("\\.");
                         int t = 0;
@@ -109,11 +110,10 @@ public class DNSClient {
 
                         }
                        
-                        domain = inputs[j];
                         
                     }
-                    
-                     j++;
+                    domain = inputs[j];
+                    j++;
                     System.out.println(j);
                     System.out.println(inputs.length);
                    /* else{
@@ -142,6 +142,8 @@ public class DNSClient {
             DatagramSocket clientSocket = new DatagramSocket();
             clientSocket.setSoTimeout(this.tOut);
             InetAddress i_add = InetAddress.getByAddress(this.serverInByte);
+           
+            
             
             DNSRequest request = new DNSRequest(domain, qType);
             byte[] request_bytes = request.getBytes();
